@@ -6,14 +6,12 @@ import Event from './Event';
 //         'click .toggle-all': 'onClickToggleAll',
 //         }
 
-export default class extends Event {
+export default class View extends Event {
     constructor(props) {
         super(props);
 
         this.el = props.el || this.getWrap();
-        this.tpl = props.tpl || '';
         this.model = props.model || {};
-        // this.events = props.events || {};
         this.children = [];
         this.delegateEvents();
     }
