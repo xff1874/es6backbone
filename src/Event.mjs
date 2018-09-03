@@ -1,4 +1,4 @@
-class Emitter {
+export class Event {
     on(type, listener) {
         if (!this.listeners) this.listeners = {};
         if (!this.listeners[type]) this.listeners[type] = [];
@@ -33,7 +33,7 @@ class Emitter {
     }
 }
 
-let e1 = new Emitter();
+let e1 = new Event();
 // const f1 = () => {
 //     console.log('click1');
 // };
