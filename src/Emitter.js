@@ -15,17 +15,42 @@ class Emitter {
             });
         }
     }
+    emit(type, args) {
+        const arrs = this.listeners[type];
+        if (arrs && arrs.length) {
+            arrs.forEach(item => {
+                item && item(args);
+            });
+        }
+    }
+    once(type, listener) {
+        const fn = () => {
+            this.off(type, fn);
+            listener();
+        };
+
+        this.on(type, fn);
+    }
 }
 
 let e1 = new Emitter();
-const f1 = () => {
-    console.log('click1');
-};
-e1.on('click', f1);
-e1.on('click', () => {
-    console.log('click2');
+// const f1 = () => {
+//     console.log('click1');
+// };
+// e1.on('click', f1);
+// e1.on('click', () => {
+//     console.log('click2');
+// });
+
+// e1.off('click', f1);
+
+// console.log(e1.listeners);
+// e1.emit('click');
+
+e1.once('clickonce', () => {
+    console.log('once');
 });
 
-e1.off('click', f1);
-
-console.log(e1.listeners);
+e1.emit('clickonce');
+e1.emit('clickonce');
+e1.emit('clickonce');
