@@ -33,7 +33,7 @@ export class Event {
     }
 }
 
-let e1 = new Event();
+// let e1 = new Event();
 // const f1 = () => {
 //     console.log('click1');
 // };
@@ -47,10 +47,10 @@ let e1 = new Event();
 // console.log(e1.listeners);
 // e1.emit('click');
 
-e1.once('clickonce', () => {
-    console.log('once');
-});
+// e1.once('clickonce', () => {
+//     console.log('once');
+// });
 
-e1.emit('clickonce');
-e1.emit('clickonce');
-e1.emit('clickonce');
+// e1.emit('clickonce');
+// e1.emit('clickonce');
+// e1.emit('clickonce');
