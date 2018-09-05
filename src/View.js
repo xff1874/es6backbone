@@ -9,16 +9,16 @@ import Emitter from './Emitter';
 export default class extends Emitter {
     constructor(props) {
         super(props);
-        this.state = {
-            el: props.el || this.getWrap(),
-            tpl: props.tpl || '',
-            model: props.model || {},
-            events: props.events || {},
-        };
+        this.el = props.el || this.getWrap();
+        this.tpl = props.tpl || '';
+        this.model = props.model || {};
+        this.events = props.events || {};
+        this.children = [];
+        this.delegateEvents();
     }
 
-    handleEvents() {
-        Object.keys(this.state.event).map((key, index) => {
+    delegateEvents() {
+        Object.keys(this.events).map((key, index) => {
             const attrs = key.split(' ');
             const type = attrs[0];
             const selector = attr[1];
@@ -36,8 +36,22 @@ export default class extends Emitter {
     }
     render() {
         this.el.innerHTML = this.tpl;
+        return this;
     }
-    destory() {
-        this.state = null;
+    $(elem) {
+        document.querySelector(elem);
+    }
+    destroyChildren() {
+        this.children.forEach(child => {
+            child.onDestory();
+        });
+    }
+    addChild(child) {
+        this.children.push(child);
+    }
+    onDestroy() {
+        this.el = null;
+        this.tpl = '';
+        this.events = null;
     }
 }
