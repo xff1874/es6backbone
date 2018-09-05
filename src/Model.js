@@ -1,8 +1,6 @@
-import { Event } from './Event.js';
+import { Emitter } from './Emitter.js';
 
-debugger;
-
-class Model extends Event {
+class Model extends Emitter {
     constructor(props) {
         super(props);
         this.attributes = Object.assign({}, props);
