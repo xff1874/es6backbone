@@ -12,7 +12,7 @@ export default class extends Emitter {
         this.el = props.el || this.getWrap();
         this.tpl = props.tpl || '';
         this.model = props.model || {};
-        this.events = props.events || {};
+        // this.events = props.events || {};
         this.children = [];
         this.delegateEvents();
     }
@@ -21,13 +21,14 @@ export default class extends Emitter {
         Object.keys(this.events).map((key, index) => {
             const attrs = key.split(' ');
             const type = attrs[0];
-            const selector = attr[1];
+            const selector = attrs[1];
             const fn = this.events[key];
-            this.el.addEventListener(type, e => {
-                if (e && e.target.match(selector)) {
-                    fn && fn(e);
-                }
-            });
+            this.el &&
+                this.el.addEventListener(type, e => {
+                    if (e && e.target.match(selector)) {
+                        fn && fn(e);
+                    }
+                });
         });
     }
 
@@ -48,8 +49,9 @@ export default class extends Emitter {
     }
     addChild(child) {
         this.children.push(child);
+        return this;
     }
-    onDestroy() {
+    onDestory() {
         this.el = null;
         this.tpl = '';
         this.events = null;

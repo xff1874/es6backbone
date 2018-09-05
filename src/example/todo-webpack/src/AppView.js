@@ -43,22 +43,21 @@ class AppView extends View {
         this.model[this.filter].forEach(this.addTodo);
         // Add stats child view and render it.
         // Remember that addChild and render methods return the view itself.
-        this.stats = this.addChild(
-            new StatsView({
-                // Stats view options
-                // Render on footer cached element
-                el: this.$footer,
-                // Pass app model
-                model: this.model,
-                // Current filter
-                filter: this.filter,
-                // A handler to be called from stats to filter todos
-                handleFilter: filter => {
-                    this.filter = filter;
-                    this.render();
-                },
-            })
-        ).render(); // Render stats
+        const stateView = new StatsView({
+            // Stats view options
+            // Render on footer cached element
+            el: this.$footer,
+            // Pass app model
+            model: this.model,
+            // Current filter
+            filter: this.filter,
+            // A handler to be called from stats to filter todos
+            handleFilter: filter => {
+                this.filter = filter;
+                this.render();
+            },
+        });
+        this.stats = this.addChild(stateView).render(); // Render stats
 
         return this;
     }
