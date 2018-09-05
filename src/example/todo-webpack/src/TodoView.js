@@ -1,4 +1,4 @@
-import { View } from 'rasti';
+import { View } from '../../../index.js';
 
 // Todo ui
 class TodoView extends View {
@@ -32,7 +32,7 @@ class TodoView extends View {
         this.el.innerHTML = this.template(this.model);
         // Cache ref to input dom element
         this.$input = this.$('.edit');
-        // Add listener to blur event. 
+        // Add listener to blur event.
         // It cannot be delegated, so we have to manually add an event listener.
         this.$input.addEventListener('blur', this.close);
 
@@ -54,7 +54,9 @@ class TodoView extends View {
         // Check 'editing' class
         if (!this.el.classList.contains('editing')) return;
         // Also reset the hidden input back to the original value.
-        setTimeout(() => { this.$input.value = this.model.title; }, 10);
+        setTimeout(() => {
+            this.$input.value = this.model.title;
+        }, 10);
         // Remove 'editing' class from element
         this.el.classList.remove('editing');
     }
@@ -62,15 +64,15 @@ class TodoView extends View {
     saveAndClose() {
         // Check 'editing' class
         if (!this.el.classList.contains('editing')) return;
-        
+
         let value = this.$input.value;
-        
+
         if (value) {
             this.model.title = value;
         } else {
             this.clear();
         }
-        
+
         this.el.classList.remove('editing');
     }
     // Event handlers
@@ -95,24 +97,26 @@ class TodoView extends View {
 
 Object.assign(TodoView.prototype, {
     // Element tag name
-    tag : 'li',
+    tag: 'li',
     // Delegated events
-    events : {
-        'click .toggle' : 'toggle',
-        'dblclick label' : 'edit',
-        'click .destroy' : 'onClickDestroy',
-        'keydown .edit' : 'onKeyPressEdit',
-        'keypress .edit' : 'onKeyPressEdit'
+    events: {
+        'click .toggle': 'toggle',
+        'dblclick label': 'edit',
+        'click .destroy': 'onClickDestroy',
+        'keydown .edit': 'onKeyPressEdit',
+        'keypress .edit': 'onKeyPressEdit',
     },
     // Template
-    template : (model) => `
+    template: model => `
         <div class="view${model.completed ? ' completed' : ''}">
-            <input class="toggle" type="checkbox"${model.completed ? ' checked' : ''}>
+            <input class="toggle" type="checkbox"${
+                model.completed ? ' checked' : ''
+            }>
             <label>${model.title}</label>
             <button class="destroy"></button>
         </div>
         <input class="edit" value="${model.title}">
-    `
+    `,
 });
 
 export default TodoView;

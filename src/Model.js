@@ -1,6 +1,6 @@
-import { Emitter } from './Emitter.js';
+import Emitter from './Emitter.js';
 
-class Model extends Emitter {
+export default class Model extends Emitter {
     constructor(props) {
         super(props);
         this.attributes = Object.assign({}, props);

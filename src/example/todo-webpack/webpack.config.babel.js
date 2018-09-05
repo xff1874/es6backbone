@@ -8,58 +8,64 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 const { NODE_ENV } = process.env;
 
 export default {
-    entry : [
-        './src/index'
-    ],
-    
-    output : {
-        path : path.resolve(__dirname, 'dist'),
-        filename : 'main.js',
+    entry: ['./src/index'],
+
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'main.js',
     },
-    
-    ...(NODE_ENV === 'production' ? {
-        mode : 'production'
-    } : {
-        mode : 'development',
-        devtool : 'inline-source-map',
-        devServer: {
-            contentBase: './dist',
-            host : '0.0.0.0'
-        }
-    }),
-    
-    module : {
-        rules : [
+
+    ...(NODE_ENV === 'production'
+        ? {
+              mode: 'production',
+          }
+        : {
+              mode: 'development',
+              devtool: 'inline-source-map',
+              devServer: {
+                  contentBase: './dist',
+                  host: '0.0.0.0',
+              },
+          }),
+
+    resolve: {
+        alias: {
+            lib$: path.resolve(__dirname, 'src'),
+        },
+    },
+
+    module: {
+        rules: [
             {
-                test : /\.js$/,
-                exclude : /node_modules/,
-                use : {
-                    loader : 'babel-loader'
-                }
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                },
             },
             {
-                test : /\.css$/,
-                ...(NODE_ENV === 'production' ? {
-                    use : [
-                        { loader : MiniCssExtractPlugin.loader },
-                        { loader : 'css-loader' }
-                    ]
-                } : {
-                    use : [
-                        { loader : 'style-loader/url' },
-                        { loader : 'file-loader' }
-                    ]
-                })
-            }
-        ]
+                test: /\.css$/,
+                ...(NODE_ENV === 'production'
+                    ? {
+                          use: [
+                              { loader: MiniCssExtractPlugin.loader },
+                              { loader: 'css-loader' },
+                          ],
+                      }
+                    : {
+                          use: [
+                              { loader: 'style-loader/url' },
+                              { loader: 'file-loader' },
+                          ],
+                      }),
+            },
+        ],
     },
-    
-    plugins : [
+
+    plugins: [
         new HtmlWebpackPlugin({
-            template : './src/index.html'
+            template: './src/index.html',
         }),
-        ...(NODE_ENV === 'production' ? [
-            new MiniCssExtractPlugin()
-        ] : [])
-    ]
+        ...(NODE_ENV === 'production' ? [new MiniCssExtractPlugin()] : []),
+    ],
 };

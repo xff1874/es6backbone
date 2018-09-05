@@ -1,4 +1,4 @@
-import { View } from 'rasti';
+import { View } from '../../../index.js';
 
 // Stats ui
 class StatsView extends View {
@@ -42,15 +42,17 @@ class StatsView extends View {
 
 Object.assign(StatsView.prototype, {
     // Delegated events.
-    events : {
-        'click .all' : 'onClickAll',
-        'click .remaining' : 'onClickRemaining',
-        'click .completed' : 'onClickCompleted'
+    events: {
+        'click .all': 'onClickAll',
+        'click .remaining': 'onClickRemaining',
+        'click .completed': 'onClickCompleted',
     },
     // Template.
-    template : (model, filter) => `
+    template: (model, filter) => `
         <span class="todo-count">
-            <strong>${model.remaining.length}</strong> ${model.remaining.length === 1 ? 'item' : 'items'} left
+            <strong>${model.remaining.length}</strong> ${
+        model.remaining.length === 1 ? 'item' : 'items'
+    } left
         </span>
         <ul class="filters ${filter}">
             <li>
@@ -63,9 +65,12 @@ Object.assign(StatsView.prototype, {
                 <a class="completed">Completed</a>
             </li>
         </ul>
-        ${model.completed.length ?
-            `<button class="clear-completed">Clear completed</button>` : ''}
-    `
+        ${
+            model.completed.length
+                ? `<button class="clear-completed">Clear completed</button>`
+                : ''
+        }
+    `,
 });
 
 export default StatsView;

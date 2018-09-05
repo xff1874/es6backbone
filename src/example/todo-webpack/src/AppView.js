@@ -1,4 +1,4 @@
-import { View } from 'rasti';
+import { View } from '../../../index.js';
 
 import TodoView from './TodoView';
 import StatsView from './StatsView';
@@ -127,8 +127,8 @@ Object.assign(AppView.prototype, {
             </header>
             <section class="main">
             <input class="toggle-all" id="toggle-all" type="checkbox"${
-    model.todos.length && !model.remaining.length ? ' checked' : ''
-} />
+                model.todos.length && !model.remaining.length ? ' checked' : ''
+            } />
                 <label for="toggle-all">Mark all as complete</label>
                 <ul class="todo-list"></ul>
             </section>

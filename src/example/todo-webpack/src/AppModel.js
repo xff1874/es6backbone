@@ -1,4 +1,4 @@
-import { Emitter } from 'rasti';
+import { Emitter } from '../../../index.js';
 
 // App state and methods
 class AppModel extends Emitter {
@@ -45,11 +45,15 @@ class AppModel extends Emitter {
     }
     // Remove completed todos calling removeTodo method
     removeCompleted() {
-        this.todos.filter(todo => todo.completed).forEach(this.removeTodo.bind(this));
+        this.todos
+            .filter(todo => todo.completed)
+            .forEach(this.removeTodo.bind(this));
     }
     // Set completed attribute on all models
     toggleAll(completed) {
-        this.todos.forEach(todo => { todo.completed = completed; });
+        this.todos.forEach(todo => {
+            todo.completed = completed;
+        });
     }
     // Event handler
     // Emit 'todos:update' event when a todo changes

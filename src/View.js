@@ -6,7 +6,7 @@ import Emitter from './Emitter';
 //         'click .toggle-all': 'onClickToggleAll',
 //         }
 
-class View extends Emitter {
+export default class extends Emitter {
     constructor(props) {
         super(props);
         this.state = {
