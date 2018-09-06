@@ -41,7 +41,7 @@ export default class extends Emitter {
         return this;
     }
     $(elem) {
-        document.querySelector(elem);
+        return this.el.querySelector(elem);
     }
     destroyChildren() {
         while (this.children && this.children.length) {
@@ -56,7 +56,8 @@ export default class extends Emitter {
     }
     addChild(child) {
         this.children.push(child);
-        return this;
+        // return this;
+        return child;
     }
     unbindEvents() {
         //还没有实现。
