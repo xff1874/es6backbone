@@ -26,15 +26,15 @@ export default class extends Emitter {
             const fn = this.events[key];
             this.el &&
                 this.el.addEventListener(type, e => {
-                    if (e && e.target.match(selector)) {
-                        fn && fn(e);
+                    if (e && e.target.matches(selector)) {
+                        this[fn] && this[fn](e);
                     }
                 });
         });
     }
 
     getWrap() {
-        this.el = document.createElement('div');
+        return document.createElement('div');
     }
     render() {
         if (this.template) this.el.innerHTML = this.template(this.model);
