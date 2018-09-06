@@ -9,6 +9,7 @@ import Emitter from './Emitter';
 export default class extends Emitter {
     constructor(props) {
         super(props);
+
         this.el = props.el || this.getWrap();
         this.tpl = props.tpl || '';
         this.model = props.model || {};
@@ -36,24 +37,30 @@ export default class extends Emitter {
         this.el = document.createElement('div');
     }
     render() {
-        this.el.innerHTML = this.tpl;
+        if (this.template) this.el.innerHTML = this.template(this.model);
         return this;
     }
     $(elem) {
         document.querySelector(elem);
     }
     destroyChildren() {
-        this.children.forEach(child => {
-            child.onDestory();
-        });
+        while (this.children && this.children.length) {
+            this.children.shift().destory();
+        }
+    }
+    destory() {
+        this.destroyChildren();
+        this.unbindEvents();
+        this.onDestory();
+        this.el = null;
     }
     addChild(child) {
         this.children.push(child);
         return this;
     }
-    onDestory() {
-        this.el = null;
-        this.tpl = '';
-        this.events = null;
+    unbindEvents() {
+        //还没有实现。
     }
+    //hook函数
+    onDestory() {}
 }
