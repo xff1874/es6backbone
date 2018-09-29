@@ -1,4 +1,4 @@
-import Emitter from './Emitter';
+import Event from './Event';
 
 // events: {
 //         'keypress .new-todo': 'onKeyPressNewTodo',
@@ -6,7 +6,7 @@ import Emitter from './Emitter';
 //         'click .toggle-all': 'onClickToggleAll',
 //         }
 
-export default class extends Emitter {
+export default class extends Event {
     constructor(props) {
         super(props);
 

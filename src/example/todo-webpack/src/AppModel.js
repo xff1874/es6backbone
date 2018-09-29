@@ -1,7 +1,7 @@
-import { Emitter } from '../../../index.js';
+import { Event } from '../../../index.js';
 
 // App state and methods
-class AppModel extends Emitter {
+class AppModel extends Event {
     constructor() {
         super();
         // Bind event handler to this

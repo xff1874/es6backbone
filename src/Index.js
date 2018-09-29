@@ -1,5 +1,5 @@
-import Emitter from './Emitter';
+import Event from './Event';
 import Model from './Model';
 import View from './View';
 
-export { Emitter, Model, View };
+export { Event, Model, View };

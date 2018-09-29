@@ -1,4 +1,4 @@
-export default class Emitter {
+export default class Event {
     on(type, listener) {
         if (!this.listeners) this.listeners = {};
         if (!this.listeners[type]) this.listeners[type] = [];
