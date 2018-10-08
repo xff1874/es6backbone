@@ -41,25 +41,31 @@ export default class View extends Event {
     $(elem) {
         return this.el.querySelector(elem);
     }
-    destroyChildren() {
-        while (this.children && this.children.length) {
-            this.children.shift().destory();
-        }
-    }
-    destory() {
-        this.destroyChildren();
+
+    destroy() {
+        this.removeElement();
         this.unbindEvents();
-        this.onDestory();
         this.el = null;
     }
     addChild(child) {
         this.children.push(child);
-        // return this;
         return child;
+    }
+    destroyChildren() {
+        while(this.children.length){
+            let child = this.children.shift();
+            child.destroy();
+        }
+
     }
     unbindEvents() {
         //还没有实现。
     }
-    //hook函数
-    onDestory() {}
+    removeElement(){
+        if(this.el)
+        this.el.parentNode.removeChild(this.el);
+    }
+
+
+
 }

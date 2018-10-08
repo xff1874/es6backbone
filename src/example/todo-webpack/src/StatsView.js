@@ -22,6 +22,7 @@ class StatsView extends View {
     // Render stats
     render() {
         // Render template inside element
+        if(this.el)
         this.el.innerHTML = this.template(this.model, this.filter);
         return this;
     }
