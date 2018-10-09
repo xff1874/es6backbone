@@ -38,17 +38,8 @@ function tokenizer(input) {
             continue;
         }
 
-        let number = /\d/;
-        if (number.test(c)) {
-            tokens.push({
-                type: 'number',
-                value: c,
-            });
-            index++;
-            continue;
-        }
 
-        let word = /\w/;
+        let word = /[a-zA-Z]/;
         if (word.test(c)) {
             let sequence = '';
             while (word.test(c)) {
@@ -62,6 +53,17 @@ function tokenizer(input) {
             });
             continue;
         }
+
+         let number = /\d/;
+        if (number.test(c)) {
+            tokens.push({
+                type: 'number',
+                value: c,
+            });
+            index++;
+            continue;
+        }
+
 
 
 
@@ -80,5 +82,5 @@ function tokenizer(input) {
 assert.deepStrictEqual(
     tokenizer(input),
     tokens,
-    'Tokenizer should turn `input` string into `tokens` array'
+    '解析错误'
 );
