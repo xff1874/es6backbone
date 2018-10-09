@@ -38,6 +38,16 @@ function tokenizer(input) {
             continue;
         }
 
+        let number = /\d/;
+        if (number.test(c)) {
+            tokens.push({
+                type: 'number',
+                value: c,
+            });
+            index++;
+            continue;
+        }
+
         let word = /\w/;
         if (word.test(c)) {
             let sequence = '';
@@ -53,17 +63,9 @@ function tokenizer(input) {
             continue;
         }
 
-        let number = /\d/;
-        if (number.test(c)) {
-            tokens.push({
-                type: 'number',
-                value: c,
-            });
-            index++;
-            continue;
-        }
 
-        let space = /\\s/;
+
+        let space = /\s/;
         if (space.test(c)) {
             //donothing
             index++;
