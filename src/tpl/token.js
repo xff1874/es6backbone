@@ -78,9 +78,10 @@ function tokenizer(input) {
     }
     return tokens;
 }
-
-assert.deepStrictEqual(
-    tokenizer(input),
+ const re = tokenizer(input);
+assert.deepEqual(
+    re,
     tokens,
-    '解析错误'
+    'token解析错误'
 );
+console.log(re)
