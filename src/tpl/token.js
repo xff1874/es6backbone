@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const input = '(add 2 (subtract 4 2))';
+const input = '(add 2 (subtract 422 2))';
 
 const tokens = [
     { type: 'paren', value: '(' },
@@ -8,7 +8,7 @@ const tokens = [
     { type: 'number', value: '2' },
     { type: 'paren', value: '(' },
     { type: 'name', value: 'subtract' },
-    { type: 'number', value: '4' },
+    { type: 'number', value: '422' },
     { type: 'number', value: '2' },
     { type: 'paren', value: ')' },
     { type: 'paren', value: ')' },
@@ -56,12 +56,19 @@ function tokenizer(input) {
 
          let number = /\d/;
         if (number.test(c)) {
+
+              let alpha = '';
+            while (number.test(c)) {
+                alpha += c;
+                c = input[++index];
+            }
+
             tokens.push({
                 type: 'number',
-                value: c,
+                value: alpha,
             });
-            index++;
             continue;
+
         }
 
 
