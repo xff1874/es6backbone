@@ -1,10 +1,10 @@
 const assert = require('assert');
 
-const input = '(add 2 (subtract 422 2))';
+const input = '("add" 2 (subtract 422 2))';
 
 const tokens = [
     { type: 'paren', value: '(' },
-    { type: 'name', value: 'add' },
+    { type: 'string', value: 'add' },
     { type: 'number', value: '2' },
     { type: 'paren', value: '(' },
     { type: 'name', value: 'subtract' },
@@ -38,7 +38,6 @@ function tokenizer(input) {
             continue;
         }
 
-
         let word = /[a-zA-Z]/;
         if (word.test(c)) {
             let sequence = '';
@@ -54,10 +53,9 @@ function tokenizer(input) {
             continue;
         }
 
-         let number = /\d/;
+        let number = /\d/;
         if (number.test(c)) {
-
-              let alpha = '';
+            let alpha = '';
             while (number.test(c)) {
                 alpha += c;
                 c = input[++index];
@@ -68,11 +66,24 @@ function tokenizer(input) {
                 value: alpha,
             });
             continue;
-
         }
 
-
-
+        //双引号处理
+        if (c === '"') {
+            c = input[++index];
+            let s = '';
+            while (c !== '"') {
+                s += c;
+                c = input[++index];
+            }
+            tokens.push({
+                type: 'string',
+                value: s,
+            });
+            //skip last dobule quote
+            ++index
+            continue;
+        }
 
         let space = /\s/;
         if (space.test(c)) {
@@ -85,10 +96,6 @@ function tokenizer(input) {
     }
     return tokens;
 }
- const re = tokenizer(input);
-assert.deepEqual(
-    re,
-    tokens,
-    'token解析错误'
-);
-console.log(re)
+const re = tokenizer(input);
+assert.deepEqual(re, tokens, 'token解析错误');
+console.log(re);
