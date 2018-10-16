@@ -3,7 +3,7 @@ const assert = require('assert');
 const input = '("add" 2 (subtract 422 2))';
 
 function transform(tokens) {
-    let index=0;
+    let index = 0;
     let ast = {
         type: 'Program',
         body: [],
@@ -15,39 +15,45 @@ function transform(tokens) {
         if (token.type == 'paren' && token.value == ')') return;
 
         if (token.type == 'paren' && token.value == '(') {
-            index++;
-            return walk()
-        }
-
-        if (token.type == 'name' || token.type == 'string') {
+            token = tokens[++index];
             let expression = {
                 type: 'CallExpression',
                 name: token.value,
                 params: [],
             };
+
+            token = tokens[++index]; //尼玛
+
+            while (
+                token.type !== 'paren' ||
+                (token.type === 'paren' && token.value !== ')')
+            ) {
+                expression.params.push(walk());
+                token = tokens[index];
+            }
+
             index++;
 
-            expression.params.push(walk())
             return expression;
         }
 
-        if(token.type == "number"){
+        if (token.type == 'number') {
             index++;
             return {
-                type:"NumberLiteral",
-                value:token.value
-            }
+                type: 'NumberLiteral',
+                value: token.value,
+            };
         }
     }
 
-    ast.body.push(walk())
+    ast.body.push(walk());
 
     return ast;
 }
 
 const tokens = [
     { type: 'paren', value: '(' },
-    { type: 'string', value: 'add' },
+    { type: 'name', value: 'add' },
     { type: 'number', value: '2' },
     { type: 'paren', value: '(' },
     { type: 'name', value: 'subtract' },
@@ -89,6 +95,6 @@ const ast = {
 
 const re = transform(tokens);
 
-console.log(re)
+console.log(re);
 
-assert.deepEqual(re, ast, 'tokens转换为 ast错误');
+assert.deepStrictEqual(re, ast, 'tokens转换为 ast错误');
