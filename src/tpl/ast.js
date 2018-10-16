@@ -14,13 +14,13 @@ function transform(tokens) {
         if (token.type == 'paren' && token.value == ')') return;
 
         if (token.type == 'paren' && token.value == '(') {
-            currentToken = tokens[++index];
+            index++;
         }
 
         if (token.type == 'name' || token.type == 'string') {
             let expression = {
                 type: 'CallExpression',
-                name: token.value
+                name: token.value,
                 params: [],
             };
 
@@ -28,6 +28,7 @@ function transform(tokens) {
         }
 
         if(token.type == "number"){
+            index++;
             return {
                 type:"NumberLiteral",
                 value:token.value
