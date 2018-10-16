@@ -40,6 +40,8 @@ function transform(tokens) {
     }
 
     ast.body.push(walk())
+
+    return ast;
 }
 
 const tokens = [
