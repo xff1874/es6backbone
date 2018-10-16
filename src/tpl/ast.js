@@ -10,12 +10,13 @@ function transform(tokens) {
     };
 
     function walk() {
+        //结果无法返回?
         let token = tokens[index];
         if (token.type == 'paren' && token.value == ')') return;
 
         if (token.type == 'paren' && token.value == '(') {
             index++;
-            walk()
+            return walk()
         }
 
         if (token.type == 'name' || token.type == 'string') {
@@ -87,5 +88,7 @@ const ast = {
 };
 
 const re = transform(tokens);
+
+console.log(re)
 
 assert.deepEqual(re, ast, 'tokens转换为 ast错误');
