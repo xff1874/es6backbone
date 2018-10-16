@@ -15,6 +15,7 @@ function transform(tokens) {
 
         if (token.type == 'paren' && token.value == '(') {
             index++;
+            walk()
         }
 
         if (token.type == 'name' || token.type == 'string') {
@@ -23,8 +24,10 @@ function transform(tokens) {
                 name: token.value,
                 params: [],
             };
+            index++;
 
             expression.params.push(walk())
+            return expression;
         }
 
         if(token.type == "number"){
