@@ -3,52 +3,51 @@ const assert = require('assert');
 const input = '("add" 2 (subtract 422 2))';
 
 function transform(tokens) {
+
     let index = 0;
-    let ast = {
-        type: 'Program',
-        body: [],
-    };
 
-    function walk() {
-        //结果无法返回?
-        let token = tokens[index];
-        if (token.type == 'paren' && token.value == ')') return;
+    let ast={
+        type:"Program",
+        body:[]
+    }
 
-        if (token.type == 'paren' && token.value == '(') {
+    function walk(){
+        token = tokens[index];
+        if(token.type == "number"){
+            index++;
+            return {
+                type:"NumberLiteral",
+                value:token.value
+            }
+        }
+        if(token.type == "paren" && token.value == "("){
             token = tokens[++index];
-            let expression = {
-                type: 'CallExpression',
-                name: token.value,
-                params: [],
-            };
+            let expression= {
+                type:"CallExpression",
+                name:token.value,
+                params:[]
+            }
+            index++;
 
-            token = tokens[++index]; //尼玛
-
-            while (
-                token.type !== 'paren' ||
-                (token.type === 'paren' && token.value !== ')')
-            ) {
-                expression.params.push(walk());
-                token = tokens[index];
+            while(!(token.type =="paren" && token.value ==")")){
+                 expression.params.push(walk())
+                 token = tokens[index];
             }
 
-            index++;
+
 
             return expression;
         }
 
-        if (token.type == 'number') {
-            index++;
-            return {
-                type: 'NumberLiteral',
-                value: token.value,
-            };
-        }
+        if(token.type == "paren" && token.value == ")") return;
+
     }
 
-    ast.body.push(walk());
+     ast.body.push(walk())
 
-    return ast;
+     return ast;
+
+
 }
 
 const tokens = [
