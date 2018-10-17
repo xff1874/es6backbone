@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 const ast = {
     type: 'Program',
     body: [
@@ -90,17 +92,19 @@ function transform(ast) {
                 type: 'Identifier',
                 name: node.name,
             },
-            arguments: { ...node.params },
+            arguments: [...node.params]  ,
         };
         return newNode;
     }
 
     ast.body.forEach(item => {
-        newAst.body.expression = walk(item);
+        newAst.body[0].expression = walk(item);
     });
     return newAst;
 }
 
 const re = transform(ast);
+
+console.log(re)
 
 assert.deepStrictEqual(re, newAst, '变形出错');
