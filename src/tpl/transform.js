@@ -69,55 +69,97 @@ const newAst = {
     ],
 };
 
+function traverse(ast, visitor) {
+    function traverseArray(array, parent) {
+        array.forEach(item => {
+            traverseNode(item, parent);
+        });
+    }
+
+    function traverseNode(node, parent) {
+        const method = visitor[node.type];
+
+        if (method && method.enter) {
+            method.enter(node, parent);
+        }
+
+        switch (node.type) {
+            case 'Program':
+                traverseArray(node.body, node);
+                break;
+
+            case 'CallExpression':
+                traverseArray(node.params, node);
+                break;
+
+            case 'NumberLiteral':
+            case 'StringLiteral':
+                break;
+        }
+
+        if (method && method.exit) {
+            method.exit(node, parent);
+        }
+    }
+
+    traverseNode(ast,null)
+}
+
 function transform(ast) {
     let newAst = {
         type: 'Program',
-        body: [
-            {
-                type: 'ExpressionStatement',
-                expression: {},
-            },
-        ],
+        body: [],
     };
+    //why
+    ast._context = newAst.body;
 
-    function walk(node) {
-        if(node.type == "NumberLiteral"){
-            return node;
-        }
+    traverse(ast, {
+        NumberLiter: {
+            enter(node, parent) {
+                parent._context.push({
+                    type: 'NumberLiteral',
+                    value: node.value,
+                });
+            },
+        },
+        StringLiteral: {
+            enter(node, parent) {
+                parent._context.push({
+                    type: 'StringLiteral',
+                    value: node.value,
+                });
+            },
+        },
+        CallExpression: {
+            enter(node, parent) {
+                let expression = {
+                    type: 'CallExpression',
+                    callee: {
+                        type: 'Identifier',
+                        name: node.name,
+                    },
+                    arguments: [],
+                };
 
+                 parent._context= expression.arguments;
 
-        if(node.type == "CallExpression"){
-            node.params.forEach(item=>{
-                walk(item)
-            })
-        }
+                if (parent.type != 'CallExpression') {
+                    expression = {
+                        type: 'ExpressionStatement',
+                        expression: expression,
+                    };
+                }
 
-        console.log("node is " + JSON.stringify(node))
+                parent._context.push(expression);
+            },
+        },
+    });
 
-        if(node.type=="CallExpression"){
-
-        }
-        // let newNode = {
-        //     type: 'CallExpression',
-        //     callee: {
-        //         type: 'Identifier',
-        //         name: node.name,
-        //     },
-        //     arguments: [...node.params]  ,
-        // };
-        // return newNode;
-    }
-
-    walk(ast.body[0])
-
-    // ast.body.forEach(item => {
-    //     newAst.body[0].expression = walk(item);
-    // });
-    // return newAst;
+    return newAst;
 }
 
 const re = transform(ast);
 
-console.log(re)
+console.log(re);
 
 assert.deepStrictEqual(re, newAst, '变形出错');
