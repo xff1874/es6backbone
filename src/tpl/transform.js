@@ -81,26 +81,39 @@ function transform(ast) {
     };
 
     function walk(node) {
-        node.params.forEach(item=>{
-            if(item.type== "CallExpression"){
+        if(node.type == "NumberLiteral"){
+            return node;
+        }
+
+
+        if(node.type == "CallExpression"){
+            node.params.forEach(item=>{
                 walk(item)
-            }
-        })
-        let newNode = {
-            type: 'CallExpression',
-            callee: {
-                type: 'Identifier',
-                name: node.name,
-            },
-            arguments: [...node.params]  ,
-        };
-        return newNode;
+            })
+        }
+
+        console.log("node is " + JSON.stringify(node))
+
+        if(node.type=="CallExpression"){
+
+        }
+        // let newNode = {
+        //     type: 'CallExpression',
+        //     callee: {
+        //         type: 'Identifier',
+        //         name: node.name,
+        //     },
+        //     arguments: [...node.params]  ,
+        // };
+        // return newNode;
     }
 
-    ast.body.forEach(item => {
-        newAst.body[0].expression = walk(item);
-    });
-    return newAst;
+    walk(ast.body[0])
+
+    // ast.body.forEach(item => {
+    //     newAst.body[0].expression = walk(item);
+    // });
+    // return newAst;
 }
 
 const re = transform(ast);
