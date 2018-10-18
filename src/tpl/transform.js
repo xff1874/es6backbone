@@ -102,7 +102,7 @@ function traverse(ast, visitor) {
         }
     }
 
-    traverseNode(ast,null)
+    traverseNode(ast, null);
 }
 
 function transform(ast) {
@@ -141,7 +141,7 @@ function transform(ast) {
                     arguments: [],
                 };
 
-                 parent._context= expression.arguments;
+                node._context = expression.arguments;
 
                 if (parent.type != 'CallExpression') {
                     expression = {
