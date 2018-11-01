@@ -95,6 +95,8 @@ function traverse(ast, visitor) {
             case 'NumberLiteral':
             case 'StringLiteral':
                 break;
+                default:
+                throw new TypeError(node.type)
         }
 
         if (method && method.exit) {
@@ -114,7 +116,7 @@ function transform(ast) {
     ast._context = newAst.body;
 
     traverse(ast, {
-        NumberLiter: {
+        NumberLiteral: {
             enter(node, parent) {
                 parent._context.push({
                     type: 'NumberLiteral',
@@ -143,7 +145,7 @@ function transform(ast) {
 
                 node._context = expression.arguments;
 
-                if (parent.type != 'CallExpression') {
+                if (parent.type !== 'CallExpression') {
                     expression = {
                         type: 'ExpressionStatement',
                         expression: expression,
