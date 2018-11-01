@@ -5,12 +5,14 @@ function generator(node) {
             return (
                 generator(node.callee) +
                 '(' +
-                generator(node.arguments)
-                    .map(generator)
-                    .join('.') +
+                node.arguments.map(generator)
+                    .join(', ') +
                 ')'
             );
             return;
+        case 'ExpressionStatement':
+            return generator(node.expression) + ';';
+            break;
         case 'Program':
             return node.body.map(generator).join('\n');
             break;
@@ -21,8 +23,8 @@ function generator(node) {
             return node.name;
             break;
         case 'StringLiteral':
-        return '"'+node.value+'"';
-        break;
+            return '"' + node.value + '"';
+            break;
     }
 }
 
