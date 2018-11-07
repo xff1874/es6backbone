@@ -2,14 +2,15 @@ var template =
     'My skills:' +
     '<%if(this.showSkills) {%>' +
     '<%for(var index in this.skills) {%>' +
-    'console.log(<%this.skills[index]%>)' +
+    '   <%this.skills[index]%>' +
     '<%}%>' +
     '<%} else {%>' +
     '<p>none</p>' +
     '<%}%>';
-TemplateEngine(template, {
-        showSkills: ['badminton', 'videogames'],
-    })
+let r = TemplateEngine(template, {
+    showSkills: ['badminton', 'videogames'],
+});
+console.log(r);
 
 function TemplateEngine(tpl, obj) {
     let re = /<%(.+?)%>/g;
@@ -25,7 +26,7 @@ function TemplateEngine(tpl, obj) {
         if (exclude.test(fragment)) {
             newStr += fragment;
         } else {
-            fragment= fragment.replace(/"/g,'\\"')
+            fragment = fragment.replace(/"/g, '\\"');
             newStr += `ntpl.push('${fragment}');`;
         }
 
@@ -39,8 +40,10 @@ function TemplateEngine(tpl, obj) {
         cursor = array.index + array[0].length;
     }
 
+    newStr += ";return ntpl.join(' ')";
 
     // return newStr;
 
-    return new Function(newStr).apply(obj)
+    let f1 = new Function(newStr);
+    return f1.apply(obj);
 }
