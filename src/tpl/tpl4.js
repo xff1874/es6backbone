@@ -2,13 +2,14 @@ var template =
     'My skills:' +
     '<%if(this.showSkills) {%>' +
     '<%for(var index in this.skills) {%>' +
-    '   <%this.skills[index]%>' +
+    '<%this.skills[index]%>' +
     '<%}%>' +
     '<%} else {%>' +
     '<p>none</p>' +
     '<%}%>';
 let r = TemplateEngine(template, {
-    showSkills: ['badminton', 'videogames'],
+    skills: ['badminton', 'videogames'],
+    showSkills: true,
 });
 console.log(r);
 
@@ -21,13 +22,17 @@ function TemplateEngine(tpl, obj) {
     let ntpl = [];
     let newStr = 'var ntpl=[];';
 
-    function add(fragment) {
+    function add(fragment, isJS) {
+        // fragment = fragment && fragment.replace(/\s/g, '');
         if (!fragment) return;
+
         if (exclude.test(fragment)) {
             newStr += fragment;
         } else {
             fragment = fragment.replace(/"/g, '\\"');
-            newStr += `ntpl.push('${fragment}');`;
+            newStr += isJS //this关键字处理。
+                ? `ntpl.push(${fragment});`
+                : `ntpl.push('${fragment}');`;
         }
 
         // console.log(fragment);
@@ -36,7 +41,7 @@ function TemplateEngine(tpl, obj) {
     while ((array = re.exec(tpl))) {
         let trival = tpl.slice(cursor, array.index);
         add(trival);
-        add(array[1]);
+        add(array[1], true);
         cursor = array.index + array[0].length;
     }
 
@@ -47,3 +52,5 @@ function TemplateEngine(tpl, obj) {
     let f1 = new Function(newStr);
     return f1.apply(obj);
 }
+
+//Todo: 空格处理。
