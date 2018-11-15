@@ -33,7 +33,7 @@ class AppView extends View {
         // Remember to destroy children first if view adds children on render
         this.destroyChildren();
         // Render template inside element
-        this.el.innerHTML = this.template(this.model);
+        this.el.innerHTML = this.renderTemplate(this.template,this.model);
         // Cache some dom elements now present on the document
         this.$input = this.$('.new-todo');
         this.$allCheckbox = this.$('.toggle-all');
@@ -119,16 +119,16 @@ Object.assign(AppView.prototype, {
         'click .toggle-all': 'onClickToggleAll',
     },
     // Template.
-    template: model => `
+    template: `
         <section class="todoapp">
             <header class="header">
                 <h1>todos</h1>
                 <input class="new-todo" placeholder="What needs to be done?" autofocus />
             </header>
             <section class="main">
-            <input class="toggle-all" id="toggle-all" type="checkbox"${
+            <input class="toggle-all" id="toggle-all" type="checkbox" <%
                 model.todos.length && !model.remaining.length ? ' checked' : ''
-            } />
+            %> />
                 <label for="toggle-all">Mark all as complete</label>
                 <ul class="todo-list"></ul>
             </section>

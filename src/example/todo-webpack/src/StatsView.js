@@ -23,7 +23,7 @@ class StatsView extends View {
     render() {
         // Render template inside element
         if(this.el)
-        this.el.innerHTML = this.template(this.model, this.filter);
+        this.el.innerHTML = this.renderTemplate(this.template,this.model);
         return this;
     }
     // Event handlers
@@ -49,13 +49,13 @@ Object.assign(StatsView.prototype, {
         'click .completed': 'onClickCompleted',
     },
     // Template.
-    template: (model, filter) => `
+    template:`
         <span class="todo-count">
-            <strong>${model.remaining.length}</strong> ${
+            <strong><%model.remaining.length%></strong> <%
         model.remaining.length === 1 ? 'item' : 'items'
-    } left
+    %> left
         </span>
-        <ul class="filters ${filter}">
+        <ul class="filters">
             <li>
                 <a class="all">All</a>
             </li>
@@ -66,11 +66,11 @@ Object.assign(StatsView.prototype, {
                 <a class="completed">Completed</a>
             </li>
         </ul>
-        ${
+        <%
             model.completed.length
-                ? `<button class="clear-completed">Clear completed</button>`
+                ? '<button class="clear-completed">Clear completed</button>'
                 : ''
-        }
+        %>
     `,
 });
 

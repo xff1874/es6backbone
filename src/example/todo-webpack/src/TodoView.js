@@ -107,15 +107,15 @@ Object.assign(TodoView.prototype, {
         'keypress .edit': 'onKeyPressEdit',
     },
     // Template
-    template: model => `
-        <div class="view${model.completed ? ' completed' : ''}">
-            <input class="toggle" type="checkbox"${
+    template: `
+        <div class="view<%model.completed ? ' completed' : ''>%">
+            <input class="toggle" type="checkbox"<%
                 model.completed ? ' checked' : ''
-            }>
-            <label>${model.title}</label>
+            %>>
+            <label><%model.title%></label>
             <button class="destroy"></button>
         </div>
-        <input class="edit" value="${model.title}">
+        <input class="edit" value="<%model.title%>">
     `,
 });
 

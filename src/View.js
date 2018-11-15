@@ -1,4 +1,5 @@
 import Event from './Event';
+import parseTPL from "./parseTPL";
 
 // events: {
 //         'keypress .new-todo': 'onKeyPressNewTodo',
@@ -34,8 +35,14 @@ export default class View extends Event {
     getWrap() {
         return document.createElement('div');
     }
+    renderTemplate(template,data){
+        const tpl = parseTPL(template);
+        const re= tpl.call(this,data);
+        return re
+    }
     render() {
-        if (this.template) this.el.innerHTML = this.template(this.model);
+
+        if (this.template) this.el.innerHTML = this.renderTemplate(this.template,this.modal);
         return this;
     }
     $(elem) {
