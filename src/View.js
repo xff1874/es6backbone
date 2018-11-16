@@ -35,9 +35,11 @@ export default class View extends Event {
     getWrap() {
         return document.createElement('div');
     }
-    renderTemplate(template,data){
+    renderTemplate(){
+        let template = arguments[0];
+        let others = Array.prototype.slice.call(arguments,1);
         const tpl = parseTPL(template);
-        const re= tpl.call(this,data);
+        const re= tpl.apply(this,others);
         return re
     }
     render() {

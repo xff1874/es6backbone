@@ -23,7 +23,7 @@ class StatsView extends View {
     render() {
         // Render template inside element
         if(this.el)
-        this.el.innerHTML = this.renderTemplate(this.template,this.model);
+        this.el.innerHTML = this.renderTemplate(this.template,this.model,this.filter);
         return this;
     }
     // Event handlers
@@ -55,7 +55,7 @@ Object.assign(StatsView.prototype, {
         model.remaining.length === 1 ? 'item' : 'items'
     %> left
         </span>
-        <ul class="filters">
+            <ul class="filters <%this.filter ? this.filter : ''%>">
             <li>
                 <a class="all">All</a>
             </li>
