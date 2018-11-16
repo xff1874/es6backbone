@@ -29,7 +29,7 @@ class TodoView extends View {
             this.$input.removeEventListener('blur', this.close);
         }
         // Render template inside el
-        this.el.innerHTML = this.template(this.model);
+        this.el.innerHTML = this.renderTemplate(this.template,this.model);
         // Cache ref to input dom element
         this.$input = this.$('.edit');
         // Add listener to blur event.
